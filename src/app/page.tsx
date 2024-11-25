@@ -13,10 +13,9 @@
     DrawerTrigger,
     DrawerActionTrigger,
   } from "@/components/ui/drawer";
-  import { Separator } from "@chakra-ui/react"
-  import {MenuSeparator} from "@/components/ui/menu"
+  import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
   import { Avatar, AvatarGroup } from "@/components/ui/avatar"
-  import { Button, VStack, HStack, Flex, Text,  } from "@chakra-ui/react";
+  import { Button, VStack, HStack, Flex, Text, Box, Separator, IconButton } from "@chakra-ui/react";
   import { useRouter } from "next/navigation"; // If using Next.js for navigation
 
   type Tool = {
@@ -66,9 +65,9 @@
     },
     {
       id: 6,
-      title: "Check Crypto Wallets",
-      description: "This app allows you to view Ethereum tokens of three Ethereum Wallets of your choosing.",
-      buttonLabel: "Open Tool Check Crypto Wallets",
+      title: "Kaggle AI Prediction",
+      description: "This app allows you to upload Kaggle Data and have AI predict the outcome of that said Data",
+      buttonLabel: "Open Kaggle Data and have AI create prediciton after prompt (Open AI API Calls, please login)",
       href: "/tools/6",
     },
   ];
@@ -85,6 +84,7 @@
     
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
     const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true); // New state for sidebar toggle
     const router = useRouter(); // For navigation
 
     // Handler to open Drawer with selected tool
@@ -106,23 +106,34 @@
       }
     };
 
+    // Toggle Sidebar Function
+    const toggleSidebar = () => {
+      setIsSidebarOpen(!isSidebarOpen);
+    };
+
     return (
-      <div className={styles.page}>
+      <Box className={styles.page}>
+      {isSidebarOpen && (
       <Flex
         direction="column"
         align="flex-start"
-        p={4}
-        w="250px"
+        p={isSidebarOpen ? 4 : 2} // Adjust padding to make the transition smoother
+        w={{
+          base: isSidebarOpen ? '80%' : '50px', // For mobile devices (base and small screens)
+          md: isSidebarOpen ? '25%' : '50px',   // For medium screens and above (e.g., tablets, desktops)
+        }}
         h="100vh"
         boxShadow="md"
-        position="fixed"
+        transform={isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'}
+        opacity={isSidebarOpen ? 1 : 0.5} // Reduced opacity when closed for a soft effect
+        transition="all 1.5s ease-in-out" // Increased duration for smooth, gradual transition
       >
         {/* Logo Section */}
-        <HStack gap={3} mb={4} >
+        <HStack gap={5} mb={5} whiteSpace="normal" textAlign="center" paddingRight={'25%'}>
           {/* Replace with your logo image if available */}
-          <Avatar size="md" src="/path-to-logo.png" />
+          <Avatar size="md" src="/assets/avatar/avatar.webp" />
           <Text fontSize="xl" fontWeight="bold">
-            MyApp
+            development@deoxp.ca
           </Text>
         </HStack>
         {/* Separator */}
@@ -141,7 +152,26 @@
           ))}
         </VStack>
         </Flex>
+      )}
 
+      <IconButton
+        aria-label="Toggle Sidebar"
+        position="fixed"
+        bottom="50%"
+        left={{base: isSidebarOpen ? '80%' : '10px', // For mobile devices (base and small screens)
+          md: isSidebarOpen ? '25%' : '10px',}}   // For medium screens and above (e.g., tablets, desktops)
+        zIndex="30" // Ensure button is above the sidebar
+        size="md"
+        borderRadius="full"
+        onClick={toggleSidebar}
+        bg="gray.700"
+        color="white"
+        _hover={{ bg: 'gray.600' }}
+        boxShadow="lg"
+        transition="left 0.3s ease-in-out" // Smooth transition for button movement
+      >
+        {isSidebarOpen ? <FiChevronLeft /> : <FiChevronRight />} {/* Correct usage: icon as child */}
+      </IconButton>
         {/* Single Drawer Instance */}
         <DrawerRoot open={isDrawerOpen} onOpenChange={handleOpenChange}>
           <DrawerBackdrop />
@@ -163,6 +193,6 @@
             <DrawerCloseTrigger onClick={handleCloseDrawer} />
           </DrawerContent>
         </DrawerRoot>
-      </div>
+      </Box>
     );
   }
