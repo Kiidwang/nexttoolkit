@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "name": "Well A",
+      "latitude": 29.7604,
+      "longitude": -95.3698,
+      "status": "Active",
+      "production_rate": 150,
+      "emissions": 20
+    },
+    {
+      "id": 2,
+      "name": "Well B",
+      "latitude": 30.2672,
+      "longitude": -97.7431,
+      "status": "Inactive",
+      "production_rate": 0,
+      "emissions": 0
+    }
+  ]
+  

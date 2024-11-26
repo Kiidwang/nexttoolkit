@@ -112,9 +112,9 @@
     };
 
     return (
+      
       <Box className={styles.page}>
-      {isSidebarOpen && (
-      <Flex
+      <Flex id="SideBar"
         direction="column"
         align="flex-start"
         p={isSidebarOpen ? 4 : 2} // Adjust padding to make the transition smoother
@@ -124,9 +124,10 @@
         }}
         h="100vh"
         boxShadow="md"
+        position="fixed"
         transform={isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'}
-        opacity={isSidebarOpen ? 1 : 0.5} // Reduced opacity when closed for a soft effect
-        transition="all 1.5s ease-in-out" // Increased duration for smooth, gradual transition
+        opacity={isSidebarOpen ? 1 : 0}
+        transition="transform 0.7s ease-in-out, opacity 0.7s ease-in-out"
       >
         {/* Logo Section */}
         <HStack gap={5} mb={5} whiteSpace="normal" textAlign="center" paddingRight={'25%'}>
@@ -152,7 +153,6 @@
           ))}
         </VStack>
         </Flex>
-      )}
 
       <IconButton
         aria-label="Toggle Sidebar"
@@ -168,7 +168,7 @@
         color="white"
         _hover={{ bg: 'gray.600' }}
         boxShadow="lg"
-        transition="left 0.3s ease-in-out" // Smooth transition for button movement
+        transition="left 0.9s ease-in-out" // Extend the duration to 0.9s to match the sidebar transition better
       >
         {isSidebarOpen ? <FiChevronLeft /> : <FiChevronRight />} {/* Correct usage: icon as child */}
       </IconButton>
