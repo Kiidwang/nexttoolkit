@@ -1,5 +1,5 @@
   "use client"
-  import React, { useState } from "react";
+  import React, { useEffect, useState } from "react";
   import styles from "./page.module.css";
   import {
     DrawerRoot,
@@ -17,6 +17,7 @@
   import { Avatar, AvatarGroup } from "@/components/ui/avatar"
   import { Button, VStack, HStack, Flex, Text, Box, Separator, IconButton } from "@chakra-ui/react";
   import { useRouter } from "next/navigation"; // If using Next.js for navigation
+  import DigitalClock from "@/components/ui/DigitalClock";
 
   type Tool = {
     id: number;
@@ -60,15 +61,22 @@
       id: 5,
       title: "Check Crypto Wallets",
       description: "This app allows you to view Ethereum tokens of three Ethereum Wallets of your choosing.",
-      buttonLabel: "Open Tool Check Crypto Wallets",
+      buttonLabel: "Open Check Crypto Wallets",
       href: "/tools/5",
     },
     {
       id: 6,
       title: "Kaggle AI Prediction",
       description: "This app allows you to upload Kaggle Data and have AI predict the outcome of that said Data",
-      buttonLabel: "Open Kaggle Data and have AI create prediciton after prompt (Open AI API Calls, please login)",
+      buttonLabel: "Open Kaggle AI Prediction",
       href: "/tools/6",
+    },  
+    {
+      id: 7,
+      title: "Interactive Oil Well Map Demo",
+      description: "Explore how AWS Lambda powers a dynamic oil and gas well mapping app, integrated with AI to predict production and emissions trends. This demo showcases geospatial visualization, real-time data, and advanced analytics capabilities.",
+      buttonLabel: "Open Interactive Oil Well Map Demo",
+      href: "/tools/7",
     },
   ];
 
@@ -112,7 +120,9 @@
     };
 
     return (
-      
+      <>
+      {/* Persistent Clock */}
+      <DigitalClock />  
       <Box className={styles.page}>
       <Flex id="SideBar"
         direction="column"
@@ -127,6 +137,7 @@
         position="fixed"
         transform={isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)'}
         opacity={isSidebarOpen ? 1 : 0}
+        pointerEvents={isSidebarOpen ? "auto" : "none"} // Disable interaction when hidden
         transition="transform 0.7s ease-in-out, opacity 0.7s ease-in-out"
       >
         {/* Logo Section */}
@@ -194,5 +205,9 @@
           </DrawerContent>
         </DrawerRoot>
       </Box>
+      </>
     );
   }
+
+
+  
