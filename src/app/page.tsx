@@ -46,7 +46,7 @@
     {
       id: 3,
       title: "Latest Weather",
-      description: "This app grabs latest weather from three countries of your choosing.",
+      description: "This app grabs latest weather from three cities of your choosing.",
       buttonLabel: "Open Latest Weather",
       href: "/tools/3",
     },
