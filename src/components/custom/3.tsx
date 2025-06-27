@@ -14,7 +14,7 @@ interface DebugPageProps3 {
 
 const DebugPage3: React.FC<DebugPageProps3> = ({ id }) => {
   const [selectedCities, setSelectedCities] = useState<CityResult[]>([]);
-  const [response, setResponse] = useState<any>(null);
+  const [response, setResponse] = useState<WeatherResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -46,11 +46,13 @@ const DebugPage3: React.FC<DebugPageProps3> = ({ id }) => {
       const parsedBody = JSON.parse(responseData.body);
 
       setResponse(parsedBody);
-    } catch (err: any) {
-      setError(err.message || 'Unknown error');
-    } finally {
-      setLoading(false);
-    }
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Unknown error');
+        }
+      }
   };
 
   const handleCitySelect = (city: CityResult) => {

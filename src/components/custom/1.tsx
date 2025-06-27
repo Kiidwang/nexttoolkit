@@ -32,11 +32,13 @@ const DebugPage: React.FC<DebugPageProps> = ({ id }) => {
 
         const data = await res.text(); // Use `text()` in case the response isn't JSON
         setResponse(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+        } catch (err) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('Unknown error');
+          }
+        }
     };
 
     fetchData();
