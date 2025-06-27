@@ -14,7 +14,7 @@ interface DebugPageProps3 {
 
 const DebugPage3: React.FC<DebugPageProps3> = ({ id }) => {
   const [selectedCities, setSelectedCities] = useState<CityResult[]>([]);
-  const [response, setResponse] = useState<any>(null);
+  const [response, setResponse] = useState<WeatherResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
