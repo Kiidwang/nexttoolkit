@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
-const DebugPage: React.FC = () => {
+interface DebugPageProps {
+  id: string; // Define the id prop in the interface
+}
+
+const DebugPage: React.FC<DebugPageProps> = ({ id }) => {
   const [response, setResponse] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   // Replace with your actual token
-  const AUTHORIZATION_TOKEN = 'AgsGFSVkZqcoTcaz6EiavPgQLZ1mv72agwFlJGSo2oT1BXxUZoi7gidRMx6wu5gR';
+  const AUTHORIZATION_TOKEN_ENCODED = '==';
+  const AUTHORIZATION_TOKEN = atob(AUTHORIZATION_TOKEN_ENCODED);
+  const API_ENDPOINT = 'https://itfxkykvlh.execute-api.us-east-2.amazonaws.com/DEV/'+id
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch('https://z4lz1meli0.execute-api.us-east-2.amazonaws.com/crbonLabsTest', {
-          method: 'GET',
+        const res = await fetch(API_ENDPOINT, {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': AUTHORIZATION_TOKEN, // Add the Authorization header
+            'x-api-key': AUTHORIZATION_TOKEN, // Add the Authorization header
           },
         });
 
@@ -43,7 +49,7 @@ const DebugPage: React.FC = () => {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h1>API Debug Page</h1>
-      <p><strong>Endpoint:</strong> https://z4lz1meli0.execute-api.us-east-2.amazonaws.com/crbonLabsTest</p>
+      <p><strong>Endpoint:</strong> {API_ENDPOINT} </p>
       <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
         <h3>Response:</h3>
         <pre>{response}</pre>

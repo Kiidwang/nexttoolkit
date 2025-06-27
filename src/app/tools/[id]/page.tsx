@@ -2,9 +2,10 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { Box, Badge, Separator, Text, Button  } from "@chakra-ui/react";
-import MapComponent from '@/components/custom/map';
+import MapComponent from '@/components/custom/7';
 import DebugPage from '@/components/custom/1';
 import DebugPage2 from '@/components/custom/2';
+import DebugPage3 from '@/components/custom/3';
 
 const ToolPage = () => {
   const { id } = useParams(); // Get the `id` from the URL
@@ -22,24 +23,12 @@ const ToolPage = () => {
       p={4} // Padding inside the box
       boxShadow="md" // Add a shadow for depth
     >      
-     {id === '7' ? (
-        // Render the Map component for ID 7
+     {  
+      id === '3' ? (
         <>
-          <Badge colorScheme="green">Oil Well Map Tool</Badge>
-          <Text margin={'1%'}>Explore the Oil Well Map tool below:</Text>
-          <MapComponent />
-        </>
-      ) : id === '1' ? (
-        <>
-      <Badge colorPalette='pink'>TESTING API</Badge>
-      <DebugPage />
+      <Badge colorPalette='pink'>TESTING API</Badge><DebugPage3 id = {id}/>
       </>
-      ) : id === '2' ? (
-        <>
-      <Badge colorPalette='pink'>TESTING API</Badge>
-      <DebugPage2 />
-      </>
-      ):         
+      ):       
       
       <>
       <Badge colorPalette='pink'>WORK IN PROGRESS</Badge>
