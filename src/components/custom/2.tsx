@@ -24,11 +24,13 @@ const DebugPage2: React.FC<DebugPageProps> = ({ id }) => {
         const bodyContent = JSON.parse(responseData.body); // Parse the body content (since it's a stringified JSON)
         
         setResponse(bodyContent); // Set the extracted content in state
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+        } catch (err) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('Unknown error');
+          }
+        }
     };
 =======
     if (file.type !== 'application/pdf') {

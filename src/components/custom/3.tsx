@@ -46,11 +46,13 @@ const DebugPage3: React.FC<DebugPageProps3> = ({ id }) => {
       const parsedBody = JSON.parse(responseData.body);
 
       setResponse(parsedBody);
-    } catch (err: any) {
-      setError(err.message || 'Unknown error');
-    } finally {
-      setLoading(false);
-    }
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Unknown error');
+        }
+      }
   };
 
   const handleCitySelect = (city: CityResult) => {

@@ -47,11 +47,13 @@ const CitySearch: React.FC<CitySearchProps> = ({ onCitySelect }) => {
         );
 
         setResults(response.data.results || []);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch cities');
-      } finally {
-        setLoading(false);
+      } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Unknown error');
       }
+}
     }, 300); // debounce delay in ms
 
     setDebounceTimeout(timeout);

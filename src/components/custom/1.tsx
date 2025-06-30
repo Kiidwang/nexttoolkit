@@ -22,11 +22,13 @@ const DebugPage1: React.FC<DebugPageProps> = ({ id }) => {
 <<<<<<< Updated upstream
         const data = await res.text(); // Use `text()` in case the response isn't JSON
         setResponse(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+        } catch (err) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('Unknown error');
+          }
+        }
     };
 =======
     if (file.type !== 'image/png') {
