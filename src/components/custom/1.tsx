@@ -19,23 +19,10 @@ const DebugPage1: React.FC<DebugPageProps> = ({ id }) => {
 
     if (!file) return;
 
-<<<<<<< Updated upstream
-        const data = await res.text(); // Use `text()` in case the response isn't JSON
-        setResponse(data);
-        } catch (err) {
-          if (err instanceof Error) {
-            setError(err.message);
-          } else {
-            setError('Unknown error');
-          }
-        }
-    };
-=======
     if (file.type !== 'image/png') {
       setError('Only PNG files are allowed.');
       return;
     }
->>>>>>> Stashed changes
 
     const formData = new FormData();
     formData.append('file', file);

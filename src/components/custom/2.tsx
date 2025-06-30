@@ -19,25 +19,10 @@ const DebugPage2: React.FC<DebugPageProps> = ({ id }) => {
 
     if (!file) return;
 
-<<<<<<< Updated upstream
-        const responseData = await res.json(); // Parse the JSON response
-        const bodyContent = JSON.parse(responseData.body); // Parse the body content (since it's a stringified JSON)
-        
-        setResponse(bodyContent); // Set the extracted content in state
-        } catch (err) {
-          if (err instanceof Error) {
-            setError(err.message);
-          } else {
-            setError('Unknown error');
-          }
-        }
-    };
-=======
     if (file.type !== 'application/pdf') {
       setError('Only PDF files are allowed.');
       return;
     }
->>>>>>> Stashed changes
 
     const formData = new FormData();
     formData.append('file', file);
