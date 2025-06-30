@@ -1,32 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-interface DebugPageProps2 {
-  id: string; // Define the id prop in the interface
+interface DebugPageProps {
+  id: string;
 }
 
-const DebugPage2: React.FC<DebugPageProps2> = ({ id }) => {
-  const [response, setResponse] = useState<string | null>(null);
+const DebugPage2: React.FC<DebugPageProps> = ({ id }) => {
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [excelBlobUrl, setExcelBlobUrl] = useState<string | null>(null);
 
-  const BACKEND_API_ENDPOINT = 'https://wellness2195-98f4770822ff.herokuapp.com/api/aws-proxy'; // Local backend route
+  const API_ENDPOINT =
+    'https://wellness2195-98f4770822ff.herokuapp.com/api/aws-proxy';
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(BACKEND_API_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id }), // Send ID to the backend
-        });
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
 
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+    if (!file) return;
 
+<<<<<<< Updated upstream
         const responseData = await res.json(); // Parse the JSON response
         const bodyContent = JSON.parse(responseData.body); // Parse the body content (since it's a stringified JSON)
         
@@ -37,22 +30,79 @@ const DebugPage2: React.FC<DebugPageProps2> = ({ id }) => {
         setLoading(false);
       }
     };
+=======
+    if (file.type !== 'application/pdf') {
+      setError('Only PDF files are allowed.');
+      return;
+    }
+>>>>>>> Stashed changes
 
-    fetchData();
-  }, [id]); // Include `id` as a dependency for useEffect
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('id', id);
 
-  if (loading) return <div>Loading...</div>;
+    setLoading(true);
+    setError(null);
+    setExcelBlobUrl(null);
 
-  if (error) return <div>Error: {error}</div>;
+    try {
+      const res = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const contentType = res.headers.get('Content-Type');
+      if (
+        contentType !==
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      ) {
+        throw new Error(
+          `Expected Excel file, but got: ${contentType}`
+        );
+      }
+
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      setExcelBlobUrl(blobUrl);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Unknown error');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>API Debug Page</h1>
-      <p><strong>Backend Endpoint:</strong> {BACKEND_API_ENDPOINT} </p>
-      <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
-        <h3>Response:</h3>
-        <pre>{response}</pre>
-      </div>
+      <h1>API Debug Page (PDF → Excel)</h1>
+      <p>
+        <strong>Endpoint:</strong> {API_ENDPOINT}
+      </p>
+
+      <input
+        type="file"
+        accept="application/pdf"
+        onChange={handleFileChange}
+        disabled={loading}
+      />
+
+      {loading && <p>Uploading and processing...</p>}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+
+      {excelBlobUrl && (
+        <div style={{ marginTop: '20px' }}>
+          <a href={excelBlobUrl} download="output.xlsx">
+            Download Excel File
+          </a>
+        </div>
+      )}
     </div>
   );
 };
